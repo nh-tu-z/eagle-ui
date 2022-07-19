@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { ReactElement } from 'react'
+import { BrowserRouter } from 'react-router-dom';
+import AppRoutes from './AppRoutes'
 
-function App() {
+function App(): ReactElement {
   return (
-    <div className="App">
-        <p>Hello world</p>
-    </div>
-  );
+    <BrowserRouter>
+      <AppRoutes/>
+    </BrowserRouter>
+  )
 }
 
 export default App;
