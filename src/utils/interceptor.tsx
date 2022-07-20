@@ -1,10 +1,30 @@
-import axios, { AxiosInstance } from 'axios'
+import axios, { AxiosInstance, AxiosRequestHeaders } from 'axios'
+
+enum METHOD {
+    GET = 'get',
+    POST = 'post',
+    PATCH = 'patch',
+    PUT = 'put',
+    DELETE = 'delete'
+}
 
 // TODO - default url might need to be initialized in config file
 const defaultUrl = ""
 export const getBaseUrl = (api = defaultUrl): string => {
     return api ? api.replace(/\/$/, '') : ''; // Remove the last character if it's "/"
 }
+
+const getDefaultHeader = (
+    token: string | null,
+    method: string | undefined
+): AxiosRequestHeaders => ({
+    Authorization: `Bearer ${token}`,
+    Accept: 'application/json',
+    'Content-Type':
+                method === METHOD.PATCH
+                ? 'application/json-patch+json'
+                : 'application/json'
+})
 
 // TODO - inspect the lifecyle of 'store'
 let store: any
@@ -21,9 +41,16 @@ const axiosInstance = (): AxiosInstance => {
     instance.interceptors.request.use( 
         config => {
 
-        // TODO - adding something before request is sent
+            let token /* dummy */
+            // const { token } = store.getState().user.auth
+            if(false/* token */) {
+                config.headers = {
+                    ...config.headers,
+                    ...getDefaultHeader(token, config.method)
+                }
+            }
 
-        return config
+            return config
         },
         err => Promise.reject(err)
     )
