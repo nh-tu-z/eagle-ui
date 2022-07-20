@@ -8,12 +8,6 @@ enum METHOD {
     DELETE = 'delete'
 }
 
-// TODO - default url might need to be initialized in config file
-const defaultUrl = ""
-export const getBaseUrl = (api = defaultUrl): string => {
-    return api ? api.replace(/\/$/, '') : ''; // Remove the last character if it's "/"
-}
-
 const getDefaultHeader = (
     token: string | null,
     method: string | undefined
@@ -26,6 +20,12 @@ const getDefaultHeader = (
                 : 'application/json'
 })
 
+// TODO - default url might need to be initialized in config file
+const defaultUrl = ""
+export const getBaseUrl = (api = defaultUrl): string => {
+    return api ? api.replace(/\/$/, '') : ''; // Remove the last character if it's "/"
+}
+
 // TODO - inspect the lifecyle of 'store'
 let store: any
 export const injectStore = (_store: any): void => {
@@ -36,12 +36,11 @@ const axiosInstance = (): AxiosInstance => {
     const instance = axios.create({
         baseURL: getBaseUrl()
     })
-
-    // TODO - interceptor for request and response might be implemented 
+ 
     instance.interceptors.request.use( 
         config => {
-
             let token /* dummy */
+            // token will be got in store redux
             // const { token } = store.getState().user.auth
             if(false/* token */) {
                 config.headers = {
