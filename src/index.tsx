@@ -4,6 +4,10 @@ import { Provider } from 'react-redux'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { store } from './stores/store'
+import { injectStore } from './utils/interceptor'
+
+// TODO - inspect the lifecyle of 'store'
+injectStore(store)
 
 ReactDOM.render(
   <Provider store={store}>
